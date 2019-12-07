@@ -10,9 +10,9 @@
 <build>
     <plugins>
       <plugin>
-        <groupId>com.iakay.jsontopojo</groupId>
+        <groupId>io.githup.akayibrahim</groupId>
         <artifactId>jsontopojo</artifactId>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
         <executions>
           <execution>
             <configuration>
@@ -25,7 +25,7 @@
                   }
                 }
               </json>
-              <path>com.iakay.jsontopojotest.testing</path>
+              <path>io.githup.akayibrahim.testing</path>
               <className>EmployeeTesting</className>
             </configuration>
             <goals>
