@@ -39,7 +39,7 @@
 ```
 2. Run mvn clean install. Once the build is complete, navigate to the project root folder and you should see POJO's file.
 
-NOTE : if project can not download from maven repository, you can download jar from this [link](https://github.com/hitchakay/jsontopojo/blob/master/lib/jsontopojo-1.4-SNAPSHOT.jar "link").
+NOTE : if project can not download from maven repository, you can download jar from this [link](https://github.com/hitchakay/jsontopojo/raw/master/lib/jsontopojo-1.4-SNAPSHOT.jar "link").
 
 Thanks to https://github.com/giordamauro/json-to-pojo/blob/master/json-to-pojo/src/main/java/com/mgiorda/JsonToPojo.java
 
