@@ -4,7 +4,7 @@
 
 ##### Follow steps:
 
-1. Add below build tag to pom.xml of project
+1. Add below build tag to pom.xml of your project
 
 ```xml
 <build>
