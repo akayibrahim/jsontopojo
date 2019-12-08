@@ -50,7 +50,7 @@ NOTE : For using lombok, you have to add lombok dependency to your pom.xml.
       <version>1.18.10</version>
     </dependency>
 ```
-Thanks to https://github.com/giordamauro/json-to-pojo/blob/master/json-to-pojo/src/main/java/com/mgiorda/JsonToPojo.java
+Thanks to https://github.com/giordamauro/json-to-pojo/
 
 
 
