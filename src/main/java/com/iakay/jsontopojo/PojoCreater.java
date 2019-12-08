@@ -22,7 +22,10 @@ public class PojoCreater extends AbstractMojo {
     @Parameter(required = true)
     private String className;
 
+    @Parameter
+    private boolean lombok;
+
     public void execute() {
-        JsonToPojo.fromJson(json, path + "." + className);
+        JsonToPojo.fromJson(json, path + "." + className, lombok);
     }
 }

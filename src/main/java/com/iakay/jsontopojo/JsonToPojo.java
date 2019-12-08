@@ -6,6 +6,7 @@ package com.iakay.jsontopojo;
 
 import com.google.gson.*;
 import com.sun.codemodel.*;
+import lombok.Data;
 
 import java.io.File;
 import java.io.FileReader;
@@ -16,36 +17,36 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public final class JsonToPojo {
-
+    
     private static final String DEFAULT_FILE_PATH = "./src/main/java";
     private static final JCodeModel codeModel = new JCodeModel();
 
-    public static void fromFile(String jsonFile, String classPackage) {
+    public static void fromFile(String jsonFile, String classPackage, boolean lombok) {
 
         try {
             Reader reader = new FileReader(jsonFile);
             JsonElement root = new JsonParser().parse(reader);
 
-            generateCode(root, classPackage);
+            generateCode(root, classPackage, lombok);
         } catch (Exception e) {
 
             throw new IllegalStateException(e);
         }
     }
 
-    public static void fromJson(String json, String classPackage) {
+    public static void fromJson(String json, String classPackage, boolean lombok) {
 
         JsonElement root = new JsonParser().parse(json);
-        generateCode(root, classPackage);
+        generateCode(root, classPackage, lombok);
     }
 
-    static void generateCode(JsonElement root, String classPackage) {
+    static void generateCode(JsonElement root, String classPackage, boolean lombok) {
 
         int lastIndexDot = classPackage.lastIndexOf(".");
         String packageName = classPackage.substring(0, lastIndexDot);
         String className = classPackage.substring(lastIndexDot + 1, classPackage.length());
 
-        generateClass(packageName, className, root);
+        generateClass(packageName, className, root, lombok);
 
         try {
             codeModel.build(new File(DEFAULT_FILE_PATH));
@@ -55,7 +56,7 @@ public final class JsonToPojo {
         }
     }
 
-    private static JClass generateClass(String packageName, String className, JsonElement jsonElement) {
+    private static JClass generateClass(String packageName, String className, JsonElement jsonElement, boolean lombok) {
 
         JClass elementClass = null;
 
@@ -70,12 +71,12 @@ public final class JsonToPojo {
         } else if (jsonElement.isJsonArray()) {
 
             JsonArray array = jsonElement.getAsJsonArray();
-            elementClass = getClassForArray(packageName, className, array);
+            elementClass = getClassForArray(packageName, className, array, lombok);
 
         } else if (jsonElement.isJsonObject()) {
 
             JsonObject jsonObj = jsonElement.getAsJsonObject();
-            elementClass = getClassForObject(packageName, className, jsonObj);
+            elementClass = getClassForObject(packageName, className, jsonObj, lombok);
         }
 
         if (elementClass != null) {
@@ -85,7 +86,7 @@ public final class JsonToPojo {
         throw new IllegalStateException("jsonElement type not supported");
     }
 
-    private static JClass getClassForObject(String packageName, String className, JsonObject jsonObj) {
+    private static JClass getClassForObject(String packageName, String className, JsonObject jsonObj, boolean lombok) {
 
         Map<String, JClass> fields = new LinkedHashMap<String, JClass>();
 
@@ -94,18 +95,18 @@ public final class JsonToPojo {
             String fieldName = element.getKey();
             String fieldUppercase = getFirstUppercase(fieldName);
 
-            JClass elementClass = generateClass(packageName, fieldUppercase, element.getValue());
+            JClass elementClass = generateClass(packageName, fieldUppercase, element.getValue(), lombok);
             fields.put(fieldName, elementClass);
         }
 
         String classPackage = packageName + "." + className;
-        generatePojo(classPackage, fields);
+        generatePojo(classPackage, fields, lombok);
 
         JClass jclass = codeModel.ref(classPackage);
         return jclass;
     }
 
-    private static JClass getClassForArray(String packageName, String className, JsonArray array) {
+    private static JClass getClassForArray(String packageName, String className, JsonArray array, boolean lombok) {
 
         JClass narrowClass = codeModel.ref(Object.class);
         if (array.size() > 0) {
@@ -116,7 +117,7 @@ public final class JsonToPojo {
                 elementName = elementName.substring(0, elementName.length() - 1);
             }
 
-            narrowClass = generateClass(packageName, elementName, array.get(0));
+            narrowClass = generateClass(packageName, elementName, array.get(0), lombok);
         }
 
         String narrowName = narrowClass.name();
@@ -145,31 +146,32 @@ public final class JsonToPojo {
             double doubleValue = number.doubleValue();
 
             if (doubleValue != Math.round(doubleValue)) {
-                jClass = codeModel.ref("double");
+                jClass = codeModel.ref("Double");
             } else {
                 long longValue = number.longValue();
                 if (longValue >= Integer.MAX_VALUE) {
-                    jClass = codeModel.ref("long");
+                    jClass = codeModel.ref("Long");
                 } else {
-                    jClass = codeModel.ref("int");
+                    jClass = codeModel.ref("Integer");
                 }
             }
         } else if (jsonPrimitive.isBoolean()) {
-            jClass = codeModel.ref("boolean");
+            jClass = codeModel.ref("Boolean");
         } else {
             jClass = codeModel.ref(String.class);
         }
         return jClass;
     }
 
-    public static void generatePojo(String className, Map<String, JClass> fields) {
+    public static void generatePojo(String className, Map<String, JClass> fields, boolean lombok) {
 
         try {
             JDefinedClass definedClass = codeModel._class(className);
-
+            if (lombok) {
+                definedClass.annotate(Data.class);
+            }
             for (Map.Entry<String, JClass> field : fields.entrySet()) {
-
-                addGetterSetter(definedClass, field.getKey(), field.getValue());
+                createFieldAndAddGetterSetter(definedClass, field.getKey(), field.getValue(), lombok);
             }
 
         } catch (Exception e) {
@@ -177,27 +179,29 @@ public final class JsonToPojo {
         }
     }
 
-    private static void addGetterSetter(JDefinedClass definedClass, String fieldName, JClass fieldType) {
+    private static void createFieldAndAddGetterSetter(JDefinedClass definedClass, String fieldName, JClass fieldType, boolean lombok) {
 
         String fieldNameWithFirstLetterToUpperCase = getFirstUppercase(fieldName);
 
         JFieldVar field = definedClass.field(JMod.PRIVATE, fieldType, fieldName);
 
-        String getterPrefix = "get";
-        String fieldTypeName = fieldType.fullName();
-        if (fieldTypeName.equals("boolean") || fieldTypeName.equals("java.lang.Boolean")) {
-            getterPrefix = "is";
-        }
-        String getterMethodName = getterPrefix + fieldNameWithFirstLetterToUpperCase;
-        JMethod getterMethod = definedClass.method(JMod.PUBLIC, fieldType, getterMethodName);
-        JBlock block = getterMethod.body();
-        block._return(field);
+        if (!lombok) {
+            String getterPrefix = "get";
+            String fieldTypeName = fieldType.fullName();
+            if (fieldTypeName.equals("boolean") || fieldTypeName.equals("java.lang.Boolean")) {
+                getterPrefix = "is";
+            }
+            String getterMethodName = getterPrefix + fieldNameWithFirstLetterToUpperCase;
+            JMethod getterMethod = definedClass.method(JMod.PUBLIC, fieldType, getterMethodName);
+            JBlock block = getterMethod.body();
+            block._return(field);
 
-        String setterMethodName = "set" + fieldNameWithFirstLetterToUpperCase;
-        JMethod setterMethod = definedClass.method(JMod.PUBLIC, Void.TYPE, setterMethodName);
-        String setterParameter = fieldName;
-        setterMethod.param(fieldType, setterParameter);
-        setterMethod.body().assign(JExpr._this().ref(fieldName), JExpr.ref(setterParameter));
+            String setterMethodName = "set" + fieldNameWithFirstLetterToUpperCase;
+            JMethod setterMethod = definedClass.method(JMod.PUBLIC, Void.TYPE, setterMethodName);
+            String setterParameter = fieldName;
+            setterMethod.param(fieldType, setterParameter);
+            setterMethod.body().assign(JExpr._this().ref(fieldName), JExpr.ref(setterParameter));
+        }
     }
 
     private static String getFirstUppercase(String word) {
