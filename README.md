@@ -12,7 +12,7 @@
       <plugin>
         <groupId>io.github.akayibrahim</groupId>
         <artifactId>jsontopojo</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
         <executions>
           <execution>
             <configuration>
@@ -40,7 +40,7 @@
 ```
 2. Run mvn clean install. Once the build is complete, navigate to the project root folder and you should see POJO's file.
 
-NOTE : if the project can not download from maven repository, you can download jar from this [link](https://github.com/akayibrahim/jsontopojo/raw/master/lib/jsontopojo-1.0-SNAPSHOT.jar "link").
+NOTE : if the project can not download from maven repository, you can download jar from this [link](https://github.com/akayibrahim/jsontopojo/raw/master/lib/jsontopojo-1.0.jar "link").
 
 NOTE : For using lombok, you have to add lombok dependency to your pom.xml.
 ```xml    
