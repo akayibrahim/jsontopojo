@@ -10,7 +10,7 @@
 <build>
     <plugins>
       <plugin>
-        <groupId>io.githup.akayibrahim</groupId>
+        <groupId>io.github.akayibrahim</groupId>
         <artifactId>jsontopojo</artifactId>
         <version>1.0-SNAPSHOT</version>
         <executions>
