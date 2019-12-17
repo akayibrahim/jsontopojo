@@ -1,0 +1,200 @@
+{
+  "inquiryResultDTOList": [
+    {
+      "clientNo": 37957293,
+      "tckn": 32566005502,
+      "vkn": "9370384816",
+      "inquiryId": 2112,
+      "results": {
+        "map": {
+          "CUSTOMER_ADDRESS_INFORMATION": {
+            "map": {
+              "errorCode": "intelligence|100002",
+              "isDataExist": false,
+              "error": "Customer Address servisinde hata oluştu. Detay: KayitBulunamadi",
+              "isSuccess": false
+            }
+          },
+          "CLIENT_INFORMATION": {
+            "map": {
+              "client": {
+                "map": {
+                  "fatherName": {},
+                  "tradeNumber": "12345600058",
+                  "gender": {},
+                  "firmCode": "F",
+                  "mpyMusteri": "N",
+                  "clientNo": 37957293,
+                  "maidenName": {},
+                  "registeredIdDistrict": {},
+                  "identityCardExpiryDate": {},
+                  "openingReason": {},
+                  "branch": "925",
+                  "idNo": {},
+                  "registeredIdCity": {},
+                  "openingStatus": 5,
+                  "clientType": 210,
+                  "firmCityCode": "001",
+                  "companyFoundationDate": -85802400000,
+                  "surname": "  ",
+                  "vkn": "4540019679",
+                  "taxOffice": "BOĞAZİÇİ KURUML",
+                  "residence": "TR",
+                  "sbuType": "0442",
+                  "placeOfBirth": {},
+                  "idType": {},
+                  "tckn": {},
+                  "idSerialNumber": {},
+                  "motherName": {},
+                  "branchName": "GENEL MÜDÜRLÜK",
+                  "dateOfBirth": {},
+                  "clientScore": {},
+                  "clientStructure": "G",
+                  "phoneNumber": {},
+                  "nationality": "TR",
+                  "clientCondition": "Açık",
+                  "maint": "C",
+                  "mpy": "N",
+                  "name": "ARŞ METAL DEMİR SANA   ",
+                  "tradeTitle": "HACI ÖMER SABANCI HOLDİNG A.Ş.",
+                  "firmCountyCode": "03",
+                  "portfolioCode": 4109,
+                  "clientCatagory": 10,
+                  "secured": "N",
+                  "status": {}
+                }
+              },
+              "id": 10010,
+              "text": {},
+              "isDataExist": true,
+              "type": {},
+              "parameters": {},
+              "isSuccess": true
+            }
+          },
+          "NPL": {
+            "map": {
+              "totalAmount": {},
+              "hasActiveNpl": false,
+              "nplList": {
+                "myArrayList": []
+              },
+              "id": 10010,
+              "text": {},
+              "isDataExist": true,
+              "type": {},
+              "parameters": {},
+              "firstNplDate": {},
+              "notificationAmount": {},
+              "isSuccess": true
+            }
+          },
+          "KKB_LIMIT_CONTROL_SYSTEM": {
+            "map": {
+              "errorCode": "intelligence|100026",
+              "isDataExist": false,
+              "error": "Servis için ek input bilgisi sağlanmalıdır. İstihbarat adı: KKB_LIMIT_CONTROL_SYSTEM.",
+              "isSuccess": false
+            }
+          },
+          "COMMERCIAL_KKB": {
+            "map": {
+              "errorCode": "intelligence|100026",
+              "isDataExist": false,
+              "error": "Servis için ek input bilgisi sağlanmalıdır. İstihbarat adı: COMMERCIAL_KKB.",
+              "isSuccess": false
+            }
+          },
+          "KPS": {
+            "map": {
+              "errorCode": "intelligence|100002",
+              "isDataExist": false,
+              "error": "Customer Address servisinde hata oluştu. Detay: Aradığınız kriterlere uygun kayıt bulunamadı.",
+              "isSuccess": false
+            }
+          },
+          "SALARY_PAYMENT": {
+            "map": {
+              "errorCode": "intelligence|100026",
+              "isDataExist": false,
+              "error": "Servis için ek input bilgisi sağlanmalıdır. İstihbarat adı: SALARY_PAYMENT.",
+              "isSuccess": false
+            }
+          },
+          "PRIME": {
+            "map": {
+              "isDataExist": true,
+              "isSuccess": true
+            }
+          },
+          "PERSONNEL_LIMIT": {
+            "map": {
+              "id": 10010,
+              "text": {},
+              "ccaCrdPersonnelLimitResultsDTOList": {
+                "myArrayList": []
+              },
+              "isDataExist": true,
+              "type": {},
+              "parameters": {},
+              "isSuccess": true
+            }
+          },
+          "TAX_INFORMATION": {
+            "map": {
+              "errorCode": "intelligence|-999999",
+              "isDataExist": false,
+              "error": "Could not send Message.",
+              "isSuccess": false
+            }
+          },
+          "RISKMON": {
+            "map": {
+              "classificationInfoList": {
+                "myArrayList": []
+              },
+              "id": 10010,
+              "text": {},
+              "isDataExist": true,
+              "type": {},
+              "parameters": {},
+              "isSuccess": true
+            }
+          },
+          "KKB_TELCO_INQUIRY": {
+            "map": {
+              "errorCode": "intelligence|100024",
+              "isDataExist": false,
+              "error": "Catalog Acces cannot be null!",
+              "isSuccess": false
+            }
+          },
+          "MICRO": {
+            "map": {
+              "isDataExist": false,
+              "isSuccess": true
+            }
+          },
+          "CREDIT_REGULAR_PAYMENT": {
+            "map": {
+              "customerTotalUnusedLimit": 0,
+              "customerTotalDefinedLimit": 0,
+              "isDataExist": true,
+              "customerLimits": {
+                "myArrayList": []
+              },
+              "isSuccess": true
+            }
+          },
+          "SMILE": {
+            "map": {
+              "isDataExist": true,
+              "isSuccess": true
+            }
+          }
+        }
+      }
+    }
+  ],
+  "isSuccesfull": false
+}
