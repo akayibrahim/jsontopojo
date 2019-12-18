@@ -1,0 +1,194 @@
+{
+    "inquiryResultDTOList": [
+        {
+            "clientNo": 37957293,
+            "tckn": 32566005502,
+            "vkn": "9370384816",
+            "inquiryId": 2387,
+            "results": {
+                "GIB": {
+                    "result": null,
+                    "dataExist": false,
+                    "success": false,
+                    "errorCode": "intelligence|200004",
+                    "errorMessage": "Servis için ek input bilgisi sağlanmalıdır. İstihbarat adı: GIB."
+                },
+                "CUSTOMER_ADDRESS_INFORMATION": {
+                    "result": null,
+                    "dataExist": false,
+                    "success": false,
+                    "errorCode": "intelligence|200007",
+                    "errorMessage": "Customer Address servisinde hata oluştu. Detay: KayitBulunamadi"
+                },
+                "CLIENT_INFORMATION": {
+                    "result": {
+                        "id": 10010,
+                        "parameters": null,
+                        "text": null,
+                        "type": null,
+                        "client": {
+                            "branch": "925",
+                            "branchName": "GENEL MÜDÜRLÜK",
+                            "clientCatagory": 10,
+                            "clientCondition": "Açık",
+                            "clientNo": 37957293,
+                            "clientScore": null,
+                            "clientStructure": "G",
+                            "clientType": 210,
+                            "companyFoundationDate": -85802400000,
+                            "dateOfBirth": null,
+                            "fatherName": null,
+                            "firmCityCode": "001",
+                            "firmCode": "F",
+                            "firmCountyCode": "03",
+                            "gender": null,
+                            "idNo": null,
+                            "idSerialNumber": null,
+                            "idType": null,
+                            "identityCardExpiryDate": null,
+                            "maidenName": null,
+                            "maint": "C",
+                            "motherName": null,
+                            "mpy": "N",
+                            "mpyMusteri": "N",
+                            "name": "ARŞ METAL DEMİR SANA   ",
+                            "nationality": "TR",
+                            "openingReason": null,
+                            "openingStatus": 5,
+                            "phoneNumber": null,
+                            "placeOfBirth": null,
+                            "portfolioCode": 4109,
+                            "registeredIdCity": null,
+                            "registeredIdDistrict": null,
+                            "residence": "TR",
+                            "sbuType": "0442",
+                            "secured": "N",
+                            "status": null,
+                            "surname": "  ",
+                            "taxOffice": "BOĞAZİÇİ KURUML",
+                            "tckn": null,
+                            "tradeNumber": "12345600058",
+                            "tradeTitle": "HACI ÖMER SABANCI HOLDİNG A.Ş.",
+                            "vkn": "4540019679"
+                        }
+                    },
+                    "dataExist": true,
+                    "success": true,
+                    "errorCode": "intelligence|000000",
+                    "errorMessage": null
+                },
+                "NPL": {
+                    "result": {
+                        "id": 10010,
+                        "parameters": null,
+                        "text": null,
+                        "type": null,
+                        "firstNplDate": null,
+                        "hasActiveNpl": false,
+                        "notificationAmount": null,
+                        "nplList": [],
+                        "totalAmount": null
+                    },
+                    "dataExist": true,
+                    "success": true,
+                    "errorCode": "intelligence|000000",
+                    "errorMessage": null
+                },
+                "KKB_LIMIT_CONTROL_SYSTEM": {
+                    "result": null,
+                    "dataExist": false,
+                    "success": false,
+                    "errorCode": "intelligence|200004",
+                    "errorMessage": "Servis için ek input bilgisi sağlanmalıdır. İstihbarat adı: KKB_LIMIT_CONTROL_SYSTEM."
+                },
+                "COMMERCIAL_KKB": {
+                    "result": null,
+                    "dataExist": false,
+                    "success": false,
+                    "errorCode": "intelligence|200004",
+                    "errorMessage": "Servis için ek input bilgisi sağlanmalıdır. İstihbarat adı: COMMERCIAL_KKB."
+                },
+                "KPS": {
+                    "result": null,
+                    "dataExist": false,
+                    "success": false,
+                    "errorCode": "intelligence|200017",
+                    "errorMessage": "Kimlik Paylaşım Sistemi(KPS) servisinde hata oluştu. Detay: com.ykb.consumerloans.evaluation.intelligence.remote.mvt.kps.schema.HmnServiceException_Exception:  ( 10002 ) Data Access Exception occurred [could not execute native bulk manipulation query]"
+                },
+                "SALARY_PAYMENT": {
+                    "result": null,
+                    "dataExist": false,
+                    "success": false,
+                    "errorCode": "intelligence|200004",
+                    "errorMessage": "Servis için ek input bilgisi sağlanmalıdır. İstihbarat adı: SALARY_PAYMENT."
+                },
+                "PRIME": {
+                    "result": [],
+                    "dataExist": true,
+                    "success": true,
+                    "errorCode": "intelligence|000000",
+                    "errorMessage": null
+                },
+                "PERSONNEL_LIMIT": {
+                    "result": {
+                        "id": 10010,
+                        "parameters": null,
+                        "text": null,
+                        "type": null,
+                        "ccaCrdPersonnelLimitResultsDTOList": []
+                    },
+                    "dataExist": true,
+                    "success": true,
+                    "errorCode": "intelligence|000000",
+                    "errorMessage": null
+                },
+                "RISKMON": {
+                    "result": {
+                        "id": 10010,
+                        "parameters": null,
+                        "text": null,
+                        "type": null,
+                        "classificationInfoList": []
+                    },
+                    "dataExist": true,
+                    "success": true,
+                    "errorCode": "intelligence|000000",
+                    "errorMessage": null
+                },
+                "KKB_TELCO_INQUIRY": {
+                    "result": null,
+                    "dataExist": false,
+                    "success": false,
+                    "errorCode": "intelligence|100008",
+                    "errorMessage": "Catalog Acces cannot be null!"
+                },
+                "MICRO": {
+                    "result": null,
+                    "dataExist": false,
+                    "success": false,
+                    "errorCode": "intelligence|-999999",
+                    "errorMessage": "could not execute statement; SQL [n/a]; constraint [null]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement"
+                },
+                "CREDIT_REGULAR_PAYMENT": {
+                    "result": {
+                        "customerLimits": [],
+                        "customerTotalDefinedLimit": 0,
+                        "customerTotalUnusedLimit": 0
+                    },
+                    "dataExist": true,
+                    "success": true,
+                    "errorCode": "intelligence|000000",
+                    "errorMessage": null
+                },
+                "SMILE": {
+                    "result": [],
+                    "dataExist": true,
+                    "success": true,
+                    "errorCode": "intelligence|000000",
+                    "errorMessage": null
+                }
+            }
+        }
+    ],
+    "isSuccesfull": null
+}
