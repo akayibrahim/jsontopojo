@@ -5,12 +5,15 @@ package com.iakay.jsontopojo;
  */
 
 import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 import com.sun.codemodel.*;
 import lombok.Data;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +23,13 @@ public final class JsonToPojo {
     
     private static final String DEFAULT_FILE_PATH = "./src/main/java";
     private static final JCodeModel codeModel = new JCodeModel();
+    private static final List<String> classList = new ArrayList<String>();
 
     public static void fromFile(String jsonFile, String classPackage, boolean lombok) {
 
         try {
             Reader reader = new FileReader(jsonFile);
             JsonElement root = new JsonParser().parse(reader);
-
             generateCode(root, classPackage, lombok);
         } catch (Exception e) {
 
@@ -35,8 +38,8 @@ public final class JsonToPojo {
     }
 
     public static void fromJson(String json, String classPackage, boolean lombok) {
-
-        JsonElement root = new JsonParser().parse(json);
+        JsonReader reader = new JsonReader(new StringReader(json));
+        JsonElement root = new JsonParser().parse(reader);
         generateCode(root, classPackage, lombok);
     }
 
@@ -166,7 +169,10 @@ public final class JsonToPojo {
     public static void generatePojo(String className, Map<String, JClass> fields, boolean lombok) {
 
         try {
+            if (classList.contains(className))
+                return;
             JDefinedClass definedClass = codeModel._class(className);
+            classList.add(className);
             if (lombok) {
                 definedClass.annotate(Data.class);
             }
