@@ -25,7 +25,13 @@ public class PojoCreater extends AbstractMojo {
     @Parameter
     private boolean lombok;
 
+    @Parameter
+    private String postfix;
+
+    @Parameter
+    private String prefix;
+
     public void execute() {
-        JsonToPojo.fromJson(json, path + "." + className, lombok);
+        JsonToPojo.fromJson(json, path + "." + className, lombok, prefix, postfix);
     }
 }
