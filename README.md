@@ -25,9 +25,11 @@
                   }
                 }
               </json>
-              <path>io.githup.akayibrahim.testing</path>
-              <className>EmployeeTesting</className>
-              <!-- optional <lombok>true</lombok> -->
+              <path>io.githup.akayibrahim.testing</path> <!-- mandatory -->
+              <className>EmployeeTesting</className> <!-- mandatory -->
+              <lombok>true</lombok> <!-- optional -->
+              <prefix>Pre</prefix> <!-- optional -->
+              <postfix>Post</postfix> <!-- optional -->
             </configuration>
             <goals>
               <goal>create</goal>
