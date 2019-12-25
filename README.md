@@ -12,7 +12,7 @@
       <plugin>
         <groupId>io.github.akayibrahim</groupId>
         <artifactId>jsontopojo</artifactId>
-        <version>1.1</version>
+        <version>1.2</version>
         <executions>
           <execution>
             <configuration>
