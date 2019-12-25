@@ -79,9 +79,12 @@ public final class JsonToPojo {
             elementClass = getClassForArray(packageName, className, array, lombok, prefix, postfix);
 
         } else if (jsonElement.isJsonObject()) {
-
+            if (classList.contains(className)) {
+                throw new IllegalStateException("There are multiple objects of the same type, please rename these objects and try again. Object name: " + className);
+            }
             JsonObject jsonObj = jsonElement.getAsJsonObject();
             elementClass = getClassForObject(packageName, className, jsonObj, lombok, prefix, postfix);
+            classList.add(className);
         }
 
         if (elementClass != null) {
@@ -199,10 +202,7 @@ public final class JsonToPojo {
 
     public static void generatePojo(String className, Map<String, JClass> fields, boolean lombok, String prefix, String postfix) {
         try {
-            if (classList.contains(className))
-                return;
             JDefinedClass definedClass = codeModel._class(className);
-            classList.add(className);
             if (lombok) {
                 definedClass.annotate(Data.class);
             }
