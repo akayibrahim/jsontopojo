@@ -68,6 +68,7 @@ public final class JsonToPojo {
         if (jsonElement.isJsonNull()) {
             elementClass = codeModel.ref(Object.class);
 
+
         } else if (jsonElement.isJsonPrimitive()) {
 
             JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
@@ -159,11 +160,11 @@ public final class JsonToPojo {
 
         String narrowName = narrowClass.name();
         Class<?> boxedClass = null;
-        if (narrowName.equals("int")) {
+        if (narrowName.equals("Integer")) {
             boxedClass = Integer.class;
-        } else if (narrowName.equals("long")) {
+        } else if (narrowName.equals("Long")) {
             boxedClass = Long.class;
-        } else if (narrowName.equals("double")) {
+        } else if (narrowName.equals("Double")) {
             boxedClass = Double.class;
         }
         if (boxedClass != null) {
@@ -206,6 +207,8 @@ public final class JsonToPojo {
             if (lombok) {
                 definedClass.annotate(Data.class);
             }
+            definedClass.javadoc().add(String.format("JSON TO POJO - Auto Generated Code \n" +
+                    "https://github.com/akayibrahim/jsontopojo"));
             for (Map.Entry<String, JClass> field : fields.entrySet()) {
                 createFieldAndAddGetterSetter(definedClass, field.getKey(), field.getValue(), lombok);
             }
@@ -221,6 +224,12 @@ public final class JsonToPojo {
         String fieldNameWithFirstLetterToUpperCase = getFirstUppercase(fieldName);
 
         JFieldVar field = definedClass.field(JMod.PRIVATE, fieldType, fieldName);
+        if (fieldType == codeModel.ref(Object.class)) {
+            field.javadoc().add(String.format("TODO (Auto Generated Code): '%s' variable type is Object. \n" +
+                    "Please check it's data in json. If there is a problem in data, fix it and regenerate. \n" +
+                    "If there is not problem, just remove this comment. \n" +
+                    "For more detail: https://github.com/akayibrahim/jsontopojo", fieldName));
+        }
 
         if (!lombok) {
             String getterPrefix = "get";
