@@ -815,3 +815,30 @@
           "errorMessage": null
         }
 }
+
+
+public class ResultsDTO {
+    @JsonProperty("NPL")
+    private NplDTO npl;
+    @JsonProperty("KKB_KAPS")
+    private KkbKapsDTO kkbKaps;
+    @JsonProperty("CUSTOMER_ADDRESS_INFORMATION")
+    private CustomerAddressInformationDTO customerAddressInformation;
+    @JsonProperty("MICRO")
+    private MicroDTO micro;
+    @JsonProperty("SMILE")
+    private SmileDTO smile;
+    @JsonProperty("RISKMON")
+    private RiskmonDTO riskmon;
+    @JsonProperty("KKB_TELCO_INQUIRY")
+    private KkbTelcoInquiryDTO kkbTelcoInquiry;
+    @JsonProperty("PERSONNEL_LIMIT")
+    private PersonnelLimitDTO personnelLimit;
+    @JsonProperty("CREDIT_REFERENCE_SYSTEM")
+    private CreditReferenceSystemDTO creditReferenceSystem;
+    @JsonProperty("KKB_LIMIT_CONTROL_SYSTEM")
+    private KkbLimitControlSystemDTO kkbLimitControlSystem;
+    @JsonProperty("GIB")
+    private GibDTO gib;
+    @JsonProperty("CLIENT_INFORMATION")
+    private ClientInformationDTO clientInformation; 
