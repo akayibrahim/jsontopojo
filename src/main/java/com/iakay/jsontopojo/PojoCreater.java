@@ -31,7 +31,10 @@ public class PojoCreater extends AbstractMojo {
     @Parameter
     private String prefix;
 
+    @Parameter
+    private boolean throwForDuplicateObjectName;
+
     public void execute() {
-        JsonToPojo.fromJson(json, path + "." + className, lombok, prefix, postfix);
+        JsonToPojo.fromJson(json, path + "." + className, lombok, prefix, postfix, throwForDuplicateObjectName);
     }
 }

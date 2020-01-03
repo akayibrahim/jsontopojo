@@ -4,6 +4,7 @@ package com.iakay.jsontopojo;
  * Created by iakay on 2019-12-07.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.sun.codemodel.*;
@@ -27,31 +28,31 @@ public final class JsonToPojo {
     private static final JCodeModel codeModel = new JCodeModel();
     private static final List<String> classList = new ArrayList<String>();
 
-    public static void fromFile(String jsonFile, String classPackage, boolean lombok, String prefix, String postfix) {
+    public static void fromFile(String jsonFile, String classPackage, boolean lombok, String prefix, String postfix, boolean throwForDuplicateObjectName) {
 
         try {
             Reader reader = new FileReader(jsonFile);
             JsonElement root = new JsonParser().parse(reader);
-            generateCode(root, classPackage, lombok, prefix, postfix);
+            generateCode(root, classPackage, lombok, prefix, postfix, throwForDuplicateObjectName);
         } catch (Exception e) {
 
             throw new IllegalStateException(e);
         }
     }
 
-    public static void fromJson(String json, String classPackage, boolean lombok, String prefix, String postfix) {
+    public static void fromJson(String json, String classPackage, boolean lombok, String prefix, String postfix, boolean throwForDuplicateObjectName) {
         JsonReader reader = new JsonReader(new StringReader(json));
         JsonElement root = new JsonParser().parse(reader);
-        generateCode(root, classPackage, lombok, prefix, postfix);
+        generateCode(root, classPackage, lombok, prefix, postfix, throwForDuplicateObjectName);
     }
 
-    static void generateCode(JsonElement root, String classPackage, boolean lombok, String prefix, String postfix) {
+    static void generateCode(JsonElement root, String classPackage, boolean lombok, String prefix, String postfix, boolean throwForDuplicateObjectName) {
 
         int lastIndexDot = classPackage.lastIndexOf(".");
         String packageName = classPackage.substring(0, lastIndexDot);
         String className = classPackage.substring(lastIndexDot + 1, classPackage.length());
 
-        generateClass(packageName, className, root, lombok, prefix, postfix);
+        generateClass(packageName, className, root, lombok, prefix, postfix, throwForDuplicateObjectName);
 
         try {
             codeModel.build(new File(DEFAULT_FILE_PATH));
@@ -61,7 +62,7 @@ public final class JsonToPojo {
         }
     }
 
-    private static JClass generateClass(String packageName, String className, JsonElement jsonElement, boolean lombok, String prefix, String postfix) {
+    private static JClass generateClass(String packageName, String className, JsonElement jsonElement, boolean lombok, String prefix, String postfix, boolean throwForDuplicateObjectName) {
 
         JClass elementClass = null;
 
@@ -77,15 +78,11 @@ public final class JsonToPojo {
         } else if (jsonElement.isJsonArray()) {
 
             JsonArray array = jsonElement.getAsJsonArray();
-            elementClass = getClassForArray(packageName, className, array, lombok, prefix, postfix);
+            elementClass = getClassForArray(packageName, className, array, lombok, prefix, postfix, throwForDuplicateObjectName);
 
         } else if (jsonElement.isJsonObject()) {
-            if (classList.contains(className)) {
-                throw new IllegalStateException("There are multiple objects of the same type, please rename these objects and try again. Object name: " + className);
-            }
             JsonObject jsonObj = jsonElement.getAsJsonObject();
-            elementClass = getClassForObject(packageName, className, jsonObj, lombok, prefix, postfix);
-            classList.add(className);
+            elementClass = getClassForObject(packageName, className, jsonObj, lombok, prefix, postfix, throwForDuplicateObjectName);
         }
 
         if (elementClass != null) {
@@ -95,7 +92,7 @@ public final class JsonToPojo {
         throw new IllegalStateException("jsonElement type not supported");
     }
 
-    private static JClass getClassForObject(String packageName, String className, JsonObject jsonObj, boolean lombok, String prefix, String postfix) {
+    private static JClass getClassForObject(String packageName, String className, JsonObject jsonObj, boolean lombok, String prefix, String postfix, boolean throwForDuplicateObjectName) {
 
         Map<String, JClass> fields = new LinkedHashMap<String, JClass>();
 
@@ -104,23 +101,38 @@ public final class JsonToPojo {
             String fieldName = element.getKey();
             String fieldUppercase = getFirstUppercase(fieldName);
 
-            JClass elementClass = generateClass(packageName, fieldUppercase, element.getValue(), lombok, prefix, postfix);
+            JClass elementClass = generateClass(packageName, fieldUppercase, element.getValue(), lombok, prefix, postfix, throwForDuplicateObjectName);
             fields.put(fieldName, elementClass);
         }
-
-        String classPackage = packageName + "." + prepareClassName(className, prefix, postfix);
-        generatePojo(classPackage, fields, lombok, prefix, postfix);
+        className = prepareClassName(className, prefix, postfix);
+        boolean nameChanged = false;
+        String nameBeforeAfter = "Original: " + className;
+        if (classList.contains(className)) {
+            if (throwForDuplicateObjectName) {
+                throw new IllegalStateException("There are multiple objects of the same type, please rename these objects and try again. Object name: " + className);
+            } else {
+                className = className + "_$";
+                nameChanged = true;
+                nameBeforeAfter += ", Changed to: " + className;
+            }
+        }
+        classList.add(className);
+        String classPackage = packageName + "." + className;
+        generatePojo(classPackage, fields, lombok, prefix, postfix, nameChanged, nameBeforeAfter);
 
         JClass jclass = codeModel.ref(classPackage);
         return jclass;
     }
 
     private static String prepareClassName(String className, String prefix, String postfix) {
-        if (className.contains("_") || className.chars().allMatch(c -> Character.isUpperCase(c))) {
-            className = className.replace("_", " ");
-            className = WordUtils.capitalizeFully(className);
-            className = className.replace(" ", "");
+        if (!className.endsWith("_$")) {
+            if (className.contains("_") || className.chars().allMatch(c -> Character.isUpperCase(c))) {
+                className = className.replace("_", " ");
+                className = WordUtils.capitalizeFully(className);
+                className = className.replace(" ", "");
+            }
         }
+
         if (className.chars().allMatch(c -> Character.isLowerCase(c))) {
             className = WordUtils.capitalizeFully(className);
         }
@@ -135,7 +147,7 @@ public final class JsonToPojo {
     }
 
     private static String prepareVariableName(String variable) {
-        if (variable.contains("_") || Character.isUpperCase(variable.charAt(0))) {
+        if (isContainUnderlineOrStartWithUppercase(variable)) {
             variable = variable.replace("_", " ");
             variable = WordUtils.capitalizeFully(variable);
             variable = variable.replace(" ", "");
@@ -144,7 +156,11 @@ public final class JsonToPojo {
         return variable;
     }
 
-    private static JClass getClassForArray(String packageName, String className, JsonArray array, boolean lombok, String prefix, String postfix) {
+    private static boolean isContainUnderlineOrStartWithUppercase(String variable) {
+        return variable.contains("_") || Character.isUpperCase(variable.charAt(0));
+    }
+
+    private static JClass getClassForArray(String packageName, String className, JsonArray array, boolean lombok, String prefix, String postfix, boolean throwForDuplicateObjectName) {
 
         JClass narrowClass = codeModel.ref(Object.class);
         if (array.size() > 0) {
@@ -155,7 +171,7 @@ public final class JsonToPojo {
                 elementName = elementName.substring(0, elementName.length() - 1);
             }
 
-            narrowClass = generateClass(packageName, elementName, array.get(0), lombok, prefix, postfix);
+            narrowClass = generateClass(packageName, elementName, array.get(0), lombok, prefix, postfix, throwForDuplicateObjectName);
         }
 
         String narrowName = narrowClass.name();
@@ -201,14 +217,16 @@ public final class JsonToPojo {
         return jClass;
     }
 
-    public static void generatePojo(String className, Map<String, JClass> fields, boolean lombok, String prefix, String postfix) {
+    public static void generatePojo(String className, Map<String, JClass> fields, boolean lombok, String prefix, String postfix, boolean nameChanged, String nameBeforeAfter) {
         try {
             JDefinedClass definedClass = codeModel._class(className);
             if (lombok) {
                 definedClass.annotate(Data.class);
             }
-            definedClass.javadoc().add(String.format("JSON TO POJO - Auto Generated Code \n" +
-                    "https://github.com/akayibrahim/jsontopojo"));
+            definedClass.javadoc().add(String.format("Auto Generated BY JSON TO POJO \n" +
+                    "https://github.com/akayibrahim/jsontopojo" +
+                    (nameChanged ? "\n TODO - Class name changed because of there is another class with same name: " +
+                            nameBeforeAfter : "")));
             for (Map.Entry<String, JClass> field : fields.entrySet()) {
                 createFieldAndAddGetterSetter(definedClass, field.getKey(), field.getValue(), lombok);
             }
@@ -219,6 +237,8 @@ public final class JsonToPojo {
     }
 
     private static void createFieldAndAddGetterSetter(JDefinedClass definedClass, String fieldName, JClass fieldType, boolean lombok) {
+        String fieldNameTemp = fieldName;
+        boolean isContainUnderlineOrStartUppercase = isContainUnderlineOrStartWithUppercase(fieldName);
         fieldName = prepareVariableName(fieldName);
 
         String fieldNameWithFirstLetterToUpperCase = getFirstUppercase(fieldName);
@@ -229,6 +249,9 @@ public final class JsonToPojo {
                     "Please check it's data in json. If there is a problem in data, fix it and regenerate. \n" +
                     "If there is not problem, just remove this comment. \n" +
                     "For more detail: https://github.com/akayibrahim/jsontopojo", fieldName));
+        }
+        if (isContainUnderlineOrStartUppercase) {
+            field.annotate(JsonProperty.class).param("value", fieldNameTemp);
         }
 
         if (!lombok) {

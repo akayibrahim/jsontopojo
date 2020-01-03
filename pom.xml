@@ -4,7 +4,7 @@
   <groupId>io.github.akayibrahim</groupId>
   <artifactId>jsontopojo</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>1.4</version>
+  <version>1.5</version>
   <name>jsontopojo</name>
   <url>http://maven.apache.org</url>
   <description>Auto creating POJO from JSON.</description>
@@ -89,6 +89,11 @@
       <artifactId>lombok</artifactId>
       <version>1.18.10</version>
     </dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-annotations</artifactId>
+          <version>2.10.1</version>
+      </dependency>
 
   </dependencies>
 
