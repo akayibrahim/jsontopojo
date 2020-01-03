@@ -12,7 +12,7 @@
       <plugin>
         <groupId>io.github.akayibrahim</groupId>
         <artifactId>jsontopojo</artifactId>
-        <version>1.3</version>
+        <version>1.4</version>
         <executions>
           <execution>
             <configuration>
@@ -43,6 +43,8 @@
 2. Run mvn clean install. Once the build is complete, navigate to the project root folder and you should see POJO's file.
 
 Maven Repo Link => https://repo.maven.apache.org/maven2/io/github/akayibrahim/
+
+NOTE : All data in json should not be null or empty. Tool generate TODO comment for null fields, so you can fix it. Please search TODO comment after generate POJO's.
 
 NOTE : For using lombok, you have to add lombok dependency to your pom.xml.
 ```xml    
