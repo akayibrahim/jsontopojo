@@ -31,8 +31,8 @@
               <prefix>Pre</prefix> <!-- optional -->
               <postfix>Post</postfix> <!-- optional -->
               <throwForDuplicateObjectName>false</throwForDuplicateObjectName> <!-- optional - 
-                If it is set true, the plugin will throw error for duplicate object name. 
-                If it is set false, the plugin will add "_$" postfix for duplicate object name -->
+                If it is set true, the plugin will throw error for duplicate object name. You have to fix this names at json and regenerate. 
+                If it is set false, the plugin will add "_$" postfix for duplicate object name and add TODO to this class for change information. -->
             </configuration>
             <goals>
               <goal>create</goal>
