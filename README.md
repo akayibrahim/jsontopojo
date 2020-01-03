@@ -12,7 +12,7 @@
       <plugin>
         <groupId>io.github.akayibrahim</groupId>
         <artifactId>jsontopojo</artifactId>
-        <version>1.4</version>
+        <version>1.5</version>
         <executions>
           <execution>
             <configuration>
@@ -30,6 +30,7 @@
               <lombok>true</lombok> <!-- optional -->
               <prefix>Pre</prefix> <!-- optional -->
               <postfix>Post</postfix> <!-- optional -->
+              <throwForDuplicateObjectName>false</throwForDuplicateObjectName> <!-- optional - If it is set true, the plugin will throw error for duplicate object name. If it is set false, the plugin will add "_$" postfix for duplicate object name -->
             </configuration>
             <goals>
               <goal>create</goal>
@@ -53,6 +54,14 @@ NOTE : For using lombok, you have to add lombok dependency to your pom.xml.
       <artifactId>lombok</artifactId>
       <version>1.18.10</version>
     </dependency>
+```
+NOTE 2 : For using jackson, you have to add jackson dependency to your pom.xml. it is necessary for "throwForDuplicateObjectName" key.
+```xml    
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.10.1</version>
+     </dependency>
 ```
 Thanks to https://github.com/giordamauro/json-to-pojo/
 
